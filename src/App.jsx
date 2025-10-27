@@ -18,10 +18,13 @@ import {
   MapPin,
   Heart,
   Briefcase,
-  Target, // Added for Side Skill/Volleyball
+  Target, // Keeping this imported just in case, but replacing usage
 } from "lucide-react";
 import { motion, useInView } from "framer-motion";
-import developerImage from "./assets/jules5.png";
+import developerImage from './assets/jules5.png'
+// --- IMAGE FIX: Using a publicly accessible placeholder URL ---
+// NOTE: Using a placeholder URL for the profile picture as local files are inaccessible.
+
 
 
 // --- Custom GitHub SVG Component ---
@@ -60,13 +63,27 @@ const RealWhatsAppIcon = (props) => (
   </svg>
 );
 
-// Configuration Constants
+// --- New Volleyball SVG Component ---
+const VolleyballIcon = (props) => (
+  <svg {...props} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <circle cx="12" cy="12" r="10" />
+    {/* Simple stitching pattern for a volleyball look */}
+    <path d="M12 2a10 10 0 0 1 8.66 5A10 10 0 0 1 12 22a10 10 0 0 1-8.66-5A10 10 0 0 1 12 2z" opacity="0.1" />
+    <path d="M6 18c.5-2.5 1-5 1.5-7.5" />
+    <path d="M18 6c-2.5.5-5 1-7.5 1.5" />
+    <path d="M16 16.5c-2.5-.5-5-1-7.5-1.5" />
+    <path d="M15.5 15.5c-.5-2.5-1-5-1.5-7.5" />
+  </svg>
+);
+
+
+// Configuration Constants (Kept changes from previous versions)
 const developerName = "HIRWA Jules Maurice";
 const developerEmail = "hirwajules2000@gmail.com";
 const developerPhone = "+250786931313";
 const developerLocation = "Rwanda, Kigali";
 const developerExperience = "3 Years";
-const developerSideSkill = "Playing Volleyball"; // Updated to side skill
+const developerSideSkill = "Playing Volleyball"; 
 const developerGithub = "https://github.com/Hirwa24";
 const WhatsAppIcon = RealWhatsAppIcon;
 const currentYear = new Date().getFullYear();
@@ -76,15 +93,14 @@ const WHATSAPP_MESSAGE =
 const FORM_ENDPOINT = `https://formspree.io/f/xldpvqna`; // Placeholder Formspree ID
 
 
-
-// --- Data Structure (Updated) ---
+// --- Data Structure (Unchanged) ---
 const skillsData = {
   frontend: [
     { name: "React", icon: "Code" },
     { name: "Vue.js", icon: "Code" },
     { name: "HTML5/CSS3", icon: "Code" },
     { name: "Tailwind CSS", icon: "Zap" },
-    { name: "JavaScript", icon: "Code" },
+    { name: "JavaScript/TypeScript", icon: "Code" },
   ],
   backend: [
     { name: "Node.js", icon: "Server" },
@@ -143,7 +159,8 @@ const IconMap = {
   MapPin,
   Heart,
   Briefcase,
-  Target, // Volleyball icon
+  Target, 
+  Volleyball: VolleyballIcon, // Added the new icon
 };
 
 // --- Custom Styles (Font and Animations) ---
@@ -193,16 +210,20 @@ const customStyles = `
         100% { transform: translate(0, 0) scale(1); }
     }
     
+    /* --- HERO IMAGE STYLES (Circular with Fade and Fit) --- */
+    /* Retained bouncing image styles from previous request */
     .hero-image {
-        width: 200px;
-        height: 200px;
-        border:none;
-        border-radius: 45%;
-        object-fit: fit-content;
-        object-position: centerver;
-        /* Subtle glow effect around image */
-         box-shadow: 0 0 0 10px rgba(45, 212, 191, 0.2), 0 0 0 20px rgba(45, 212, 191, 0.1); 
-    }
+    width: 240px;
+    height: 290px;
+    border-radius: 18%;
+    object-fit: contain; /* CHANGED: Ensures the whole image is visible, fitting within the 200px x 200px circle */
+    border: none;
+    object-position: center;
+
+    /* Fade effect at the bottom using mask-image (retained) */
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+}
 `;
 
 // --- Framer Motion Scroll Animation Wrapper ---
@@ -397,7 +418,7 @@ const WhatsAppFixedButton = ({ phoneNumber }) => {
   );
 };
 
-// --- Bouncing Loader Component (New Rework) ---
+// --- Bouncing Loader Component (Unchanged) ---
 const BouncingLoader = () => {
     const dotVariants = {
       start: { y: "0%" },
@@ -480,7 +501,7 @@ const MobileNav = ({ isOpen, toggleMenu, setActiveSection, navItems }) => (
   </div>
 );
 
-// --- Contact Form Component (Button Color Updated) ---
+// --- Contact Form Component (Unchanged) ---
 const ContactForm = ({ formEndpoint }) => {
   const [status, setStatus] = useState("");
 
@@ -577,7 +598,7 @@ const ContactForm = ({ formEndpoint }) => {
         )}
 
         {/* Submit Button - Color Changed to Sky-500 for visibility */}
-        <button
+       <button
   type="submit"
   className="w-full flex items-center justify-center px-4 py-3 text-base font-bold rounded-lg bg-sky-500 hover:bg-sky-400 text-white transition duration-300 shadow-lg shadow-sky-500/30 transform hover:translate-y-[-2px] tracking-normal disabled:opacity-50"
   disabled={status === 'success'}
@@ -739,73 +760,123 @@ const App = () => {
         />
 
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          {/* --- 1. Hero Section --- */}
+          {/* --- 1. Hero Section (BOX LEFT / IMAGE RIGHT) --- */}
           <FadeInView>
             <section
               id="home"
-              className="min-h-[85vh] flex flex-col items-center justify-center pt-20 pb-16 text-center text-gray-100 relative"
+              className="min-h-[85vh] flex flex-col items-center justify-center pt-20 pb-16 text-gray-100 relative"
             >
-              <motion.h2
-                className="text-lg sm:text-xl font-light mb-4 tracking-widest text-amber-400 uppercase"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 0.2 }}
-              >
-               
-              </motion.h2>
+              <div className="w-full max-w-6xl mx-auto grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+                
+                {/* LEFT COLUMN: Name Box + Main Text Content (Order 1 on mobile and desktop) */}
+                <div className="text-center lg:text-left order-1 lg:order-1">
+                    
+                    {/* BOUNCING BOX: Animation now runs once (no infinite repeat) to prevent "disappearing" */}
+                    <motion.div
+                        className="p-4 mb-8 sm:mb-10 rounded-xl bg-slate-800 border border-amber-500/50 shadow-xl shadow-amber-500/20 inline-block mx-auto lg:mx-0"
+                        initial={{ opacity: 0, y: -20 }}
+                        // Changed to a simple animate (no looping bounce)
+                        animate={{ 
+                            opacity: 1, 
+                            y: 0 
+                        }}
+                        transition={{ 
+                            duration: 0.8, // Run once quickly
+                            ease: "easeOut",
+                            delay: 0.5
+                        }}
+                    >
+                        {/* WELCOMING WORDS */}
+                        <p className="text-base sm:text-lg text-gray-300 font-light mb-2">
+                            <span className="text-sky-400 font-bold">Welcome!</span> 
+                        </p>
+                        
+                        {/* Name - HIRWA JULES MAURICE */}
+                        <p className="text-xl sm:text-2xl text-gray-100 font-extrabold uppercase mb-1">
+                            <span className="text-amber-400">I'm </span>{developerName}
+                        </p>
+                       <p>      I'm your dedicated </p>
+                        {/* Highlighted Role - Full-Stack Developer */}
+                        <p className="text-sm sm:text-base text-amber-400 font-semibold mt-1 p-1 bg-slate-900 rounded-lg">
+                           FullStack Developer
+                        </p>
+                    </motion.div>
+                    {/* END STATIC BOUNCING BOX */}
 
-              <motion.div
-                className="relative mb-8 transform transition duration-500 hover:scale-[1.05]"
-                initial={{ scale: 0.8, opacity: 0 }}
-                animate={{ scale: 1, opacity: 1 }}
-                transition={{ type: "spring", stiffness: 100, delay: 0.4 }}
-              >
-                <img
-                  src={developerImage}
-                  alt={developerName}
-                  className="hero-image"
-                  onError={(e) => {
-                    e.target.onerror = null;
-                    e.target.src = developerImage;
-                  }}
-                />
-              </motion.div>
 
-              <motion.h1
-                className="text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight"
-                initial={{ x: -100, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.6 }}
-              >
-                I'm<span className="text-teal-400">  HIRWA Jules Maurice, </span>
-                I <span className="text-teal-400">BUILD</span> DIGITAL APPS.
-              </motion.h1>
-              <motion.p
-                className="text-base sm:text-xl text-gray-300 max-w-4xl mb-10 font-light italic px-4"
-                initial={{ y: 50, opacity: 0 }}
-                animate={{ y: 0, opacity: 1 }}
-                transition={{ duration: 0.8, delay: 0.8 }}
-              >
-                Leading robust digital experiences from React and Tailwind
-                frontends to scalable Node/PHP backends, with expertise in modern
-                Database Development and decentralized Blockchain solutions.
-              </motion.p>
+                    <motion.h1
+                        className="text-4xl sm:text-6xl lg:text-7xl font-extrabold mb-4 leading-tight"
+                        initial={{ x: -100, opacity: 0 }}
+                        animate={{ x: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.7 }}
+                    >
+                        I <span className="text-teal-400">BUILD</span> DIGITAL WORLDS.
+                    </motion.h1>
+                    <motion.p
+                        className="text-base sm:text-xl text-gray-300 max-w-4xl mb-10 font-light italic px-4 lg:px-0"
+                        initial={{ y: 50, opacity: 0 }}
+                        animate={{ y: 0, opacity: 1 }}
+                        transition={{ duration: 0.8, delay: 0.9 }}
+                    >
+                        I have digital experiences from React and Tailwind
+                        frontends to scalable Node/PHP backends, with expertise in modern
+                        Database Development and decentralized Blockchain solutions.
+                    </motion.p>
 
-              <motion.a
-                href="#contact"
-                className="px-8 py-3 text-base sm:text-lg font-semibold rounded-full bg-slate-900 hover:bg-slate-800 text-teal-400 transition duration-300 shadow-xl shadow-teal-400/30 border border-teal-600 transform hover:translate-y-[-2px] tracking-wider"
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.5, delay: 1 }}
-              >
-                Let's Talk <Mail className="w-5 h-5 ml-2 inline" />
-              </motion.a>
+                    <motion.a
+                        href="#contact"
+                        className="px-8 py-3 text-base sm:text-lg font-semibold rounded-full bg-slate-900 hover:bg-slate-800 text-teal-400 transition duration-300 shadow-xl shadow-teal-400/30 border border-teal-600 transform hover:translate-y-[-2px] tracking-wider"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5, delay: 1.1 }}
+                    >
+                        Let's Talk <Mail className="w-5 h-5 ml-2 inline" />
+                    </motion.a>
+                </div>
+
+
+                {/* RIGHT COLUMN: Bouncing Image (Order 2 on mobile and desktop) */}
+                <div className="flex justify-center lg:justify-start order-2 lg:order-2">
+                    {/* The image is now a motion.img element, applying the bounce directly */}
+                    <motion.img 
+                        src={developerImage}
+                        alt={developerName}
+                        // The size and fit are controlled by the .hero-image CSS class
+                        className="hero-image" 
+                        onError={(e) => { 
+                            e.target.onerror = null; 
+                            e.target.src = "./assets/jules5.png"; 
+                        }}
+                        // Initial opacity/scale for load-in animation
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ 
+                            scale: 1, 
+                            opacity: 1, 
+                            // Direct bouncing effect on the image itself
+                            y: [0, -15, 0], // Move up and down by 15px
+                        }}
+                        transition={{ 
+                            type: "spring", 
+                            stiffness: 100, 
+                            delay: 1.0,
+                            // Bounce animation properties
+                            y: { 
+                                duration: 2.5,
+                                repeat: Infinity,
+                                ease: "easeInOut",
+                                repeatType: "reverse",
+                                delay: 1.5,
+                            }
+                        }}
+                    />
+                </div>
+              </div>
             </section>
           </FadeInView>
 
-          {/* --- 2. About Me Section (Side Skills Added) --- */}
+          {/* --- 2. About Me Section (Side Skills Confirmed) --- */}
           <FadeInView delay={0.2}>
             <section
               id="about-me"
@@ -828,16 +899,16 @@ const App = () => {
                   client's browser.
                 </p>
 
-                {/* Experience and Side Skill Block */}
+                {/* Experience and Side Skill Block - NOW USING VolleyballIcon */}
                 <div className="flex flex-col sm:flex-row justify-center items-center gap-6 mt-8 p-4 bg-slate-900 rounded-xl shadow-lg border border-teal-800/50">
                   <div className="flex items-center space-x-3 text-teal-400 text-xl font-bold">
                     <Briefcase className="w-7 h-7" />
                     <span>{developerExperience} Professional Experience</span>
                   </div>
                   <div className="text-gray-50 hidden sm:block">|</div>
-                  {/* Volleyball Side Skill */}
+                  {/* Volleyball Side Skill - Using the new dedicated icon */}
                   <div className="flex items-center space-x-3 text-amber-400 text-xl font-bold">
-                    <Target className="w-7 h-7" /> 
+                    <VolleyballIcon className="w-7 h-7" /> 
                     <span>Side Skill: {developerSideSkill}</span>
                   </div>
                 </div>
@@ -852,7 +923,7 @@ const App = () => {
               className="py-20 sm:py-24 border-t border-teal-900/50"
             >
               <h2 className="text-3xl sm:text-5xl font-bold text-center mb-12 sm:mb-16 tracking-wide">
-                THE <span className="text-amber-400">STACK</span> I COMMAND
+                THE <span className="text-amber-400">SKILLS</span> I HAVE
               </h2>
 
               <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -1084,7 +1155,7 @@ const App = () => {
             <p className="text-xs">
               Designed & Developed by{" "}
               <a
-                href="https://github.com/Hirwa24"
+                href={developerGithub}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-teal-400 hover:underline"
