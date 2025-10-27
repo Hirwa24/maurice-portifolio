@@ -810,7 +810,7 @@ const App = () => {
                         animate={{ x: 0, opacity: 1 }}
                         transition={{ duration: 0.8, delay: 0.7 }}
                     >
-                        I <span className="text-teal-400">BUILD</span> DIGITAL WORLDS.
+                        I <span className="text-teal-400">BUILD</span> DIGITAL APPS.
                     </motion.h1>
                     <motion.p
                         className="text-base sm:text-xl text-gray-300 max-w-4xl mb-10 font-light italic px-4 lg:px-0"
