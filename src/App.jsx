@@ -100,7 +100,7 @@ const skillsData = {
     { name: "Vue.js", icon: "Code" },
     { name: "HTML5/CSS3", icon: "Code" },
     { name: "Tailwind CSS", icon: "Zap" },
-    { name: "JavaScript/TypeScript", icon: "Code" },
+    { name: "JavaScript", icon: "Code" },
   ],
   backend: [
     { name: "Node.js", icon: "Server" },
